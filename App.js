@@ -1,66 +1,23 @@
-import React, {useState, useEffect} from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  Button
-} from 'react-native';
-import firebase from './FirebaseDatabase.js';
+import React from 'react';
+// import firebase from './Component/FirebaseDatabase.js';
+import { NavigationContainer } from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import MainMenu from './Screen/MainScteen';
+import LightControl from './Screen/LightControl.js';
+import AcControl from './Screen/AcControl.js';
 
-function getLightState(cb) {
-  let lightStateArray = [];
-
-  firebase.database().ref('LightBulb').orderByKey().on('value', (snapshot) => {
-    lightStateArray = [];
-    snapshot.forEach((snap) => {
-      lightStateArray.push(snap.child('isOn').val());
-    });
-    cb(lightStateArray);
-  });
-}
-
-function updateLightState(index, lightState) {
-  let refAddress = "LightBulb/Light" + index;
-
-  lightState = !lightState;
-
-  firebase.database().ref(refAddress).update({
-    isOn: lightState
-  })
-}
+const Stack = createStackNavigator();
 
 function App() {
-  const [arrayOfLightState, setArrayOfLightState] = useState([]);
-
-
-  useEffect(() => {
-    getLightState(setArrayOfLightState)
-  }, []);
-  return (
-    <View style={styles.container}>
-      <Button
-        title={arrayOfLightState[0] ? "Light 1 is on" : "Light 1 is off"}
-        onPress={() => updateLightState("1", arrayOfLightState[0])}
-      />
-      <Button 
-        title={arrayOfLightState[1] ? "Light 2 is on" : "Light 1 is off"}
-        onPress={() => updateLightState("2", arrayOfLightState[1])}
-      />
-      <Button
-        title={arrayOfLightState[2] ? "Light 3 is on" : "Light 1 is off"}
-        onPress={() => updateLightState("3", arrayOfLightState[2])}
-      />
-    </View>
-  );
+  return(
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="MainMenu" component={MainMenu} options={{headerShown: false}}/>
+        <Stack.Screen name="LightControl" component={LightControl}/>
+        <Stack.Screen name="AcControl" component={AcControl}/>
+      </Stack.Navigator>
+    </NavigationContainer>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
 
 export default App;
