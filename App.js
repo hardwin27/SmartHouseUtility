@@ -1,23 +1,23 @@
 import React from 'react';
-// import firebase from './Component/FirebaseDatabase.js';
-import { NavigationContainer } from '@react-navigation/native';
-import {createStackNavigator} from '@react-navigation/stack';
-import MainMenu from './Screen/MainScteen';
-import LightControl from './Screen/LightControl.js';
-import AcControl from './Screen/AcControl.js';
+import {
+  Appbar,
+} from 'react-native-paper';
 
-const Stack = createStackNavigator();
+import BottomNav from './component/BottomNav';
 
-function App() {
-  return(
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="MainMenu" component={MainMenu} options={{headerShown: false}}/>
-        <Stack.Screen name="LightControl" component={LightControl}/>
-        <Stack.Screen name="AcControl" component={AcControl}/>
-      </Stack.Navigator>
-    </NavigationContainer>
-  )
+class App extends React.Component {
+  render() {
+    return(
+      <>
+        <Appbar.Header>
+          <Appbar.Content
+            title="SmartHouseUtility"
+          />
+        </Appbar.Header>
+        <BottomNav />
+      </>
+    );
+  }
 }
 
 export default App;
